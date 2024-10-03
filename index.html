@@ -1,74 +1,98 @@
-<?php
-// Địa chỉ API
-$url = 'https://www.ugphone.com/api/apiv1/info/advertisementRecord';
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Yêu Cầu API</title>
+    <script>
+        async function sendApiRequest() {
+            const url = 'https://www.ugphone.com/api/apiv1/info/advertisementRecord';
+            const data = {
+                auth: "7a9157cf51dfab2ff61bfc0dc54d8677",
+                ad_callback: {
+                    placement_type: 1.0,
+                    country: "VN",
+                    adunit_format: "RewardedVideo",
+                    precision: "exact",
+                    network_firm_id: 2.0,
+                    publisher_revenue: 0.0010107,
+                    adsource_price: 1.0107,
+                    ecpm_level: 0.0,
+                    currency: "USD",
+                    id: "b2050d8bca0d482dcfe8fe150b4e1fe3_300008183_1727959980618",
+                    ad_source_type: 1.0,
+                    segment_id: 0.0,
+                    adsource_id: "300008183",
+                    ad_source_custom_ext: "",
+                    bid_floor: 0.0,
+                    network_name: "Admob",
+                    scenario_reward_number: 1.0,
+                    adsource_index: 0.0,
+                    scenario_reward_name: "reward_item",
+                    network_placement_id: "ca-app-pub-2517323400145638/4690991147",
+                    adsource_isheaderbidding: 1.0,
+                    url_tag_params: "{}",
+                    reward_custom_data: "",
+                    user_load_extra_data: {
+                        auth_key: "4526144d-6ea9-74d5-070b-1e3fda19fe4d"
+                    },
+                    adunit_id: "b662a3621de3fd",
+                    network_type: "Network",
+                    abtest_id: 3.00000477E8,
+                    show_custom_ext: ""
+                }
+            };
 
-// Dữ liệu JSON cần gửi
-$data = [
-    "auth" => "7a9157cf51dfab2ff61bfc0dc54d8677",
-    "ad_callback" => [
-        "placement_type" => 1.0,
-        "country" => "VN",
-        "adunit_format" => "RewardedVideo",
-        "precision" => "exact",
-        "network_firm_id" => 2.0,
-        "publisher_revenue" => 0.0010107,
-        "adsource_price" => 1.0107,
-        "ecpm_level" => 0.0,
-        "currency" => "USD",
-        "id" => "b2050d8bca0d482dcfe8fe150b4e1fe3_300008183_1727959980618",
-        "ad_source_type" => 1.0,
-        "segment_id" => 0.0,
-        "adsource_id" => "300008183",
-        "ad_source_custom_ext" => "",
-        "bid_floor" => 0.0,
-        "network_name" => "Admob",
-        "scenario_reward_number" => 1.0,
-        "adsource_index" => 0.0,
-        "scenario_reward_name" => "reward_item",
-        "network_placement_id" => "ca-app-pub-2517323400145638/4690991147",
-        "adsource_isheaderbidding" => 1.0,
-        "url_tag_params" => "{}",
-        "reward_custom_data" => "",
-        "user_load_extra_data" => [
-            "auth_key" => "4526144d-6ea9-74d5-070b-1e3fda19fe4d"
-        ],
-        "adunit_id" => "b662a3621de3fd",
-        "network_type" => "Network",
-        "abtest_id" => 3.00000477E8,
-        "show_custom_ext" => ""
-    ]
-];
+            const headers = {
+                'Content-Type': 'application/json',
+                'android-device-info': 'eyJ2ZXJzaW9uLW5hbWUiOiIxLjMuNS41IiwiaXBhZGRyZXNzIjoiMTcyLjE2LjEuNCIsImFkanVzIjoiIiwibG9naW4taWQiOiJjODkyM2Y1MS1iZTVmLTc2YTItODVhMy1lZTk1OTEyZDEzNCIsImdhbGUiOiJlOWM1NzM1Zi02MjA0LTQzOTMtOGY0NC1hNmQwY2RkMDU3NjkiLCJz2lkIjoiIiwiYW5kcm9pZC1pZCI6IjgwZjZkMjczNGFlOTdjNjgiLCJtYWMiOiIwMDpEQjpBNTpBRTowNyIsImFwcC1uYW1lIjoiVWdQaG9uZSIsIm9zLXZlcnNpb24iOiI5IiwiaW1zaWNvZGUiOiI0NTIwMSIsInJvb3QiOiJmYWxzZSIsInZlcnNpb24tY29kZSI6IjEzNTUiLCJpbWVpIjoiODBmNmQyNzM0YWU5N2M2OCIsIm1vZGVsIjoiU00tUzkyNjAiLCJncHJzIjoiZmU4MDo6MmRiOmE1ZmY6ZmVhZTo4YzA3JXdsYW4wIiwicGhvbmVzaW0iOiJNb2JpRm9uZSIsImJyYW5kIjoic2Ftc3VuZyJ9',
+                'access-token': 'e328d2c89893dd45b909d5041438361120241003205200',
+                'terminal': 'android_google',
+                'lang': 'vi',
+                'login-id': 'c8923f51-be5f-76a2-85b3-ee95912d134',
+                'android-client-id': '80f6d2734ae97c68fb45f024-3b8f-4743-91bd-f20b2c0f956d',
+                'accept-encoding': 'gzip',
+                'user-agent': 'okhttp/3.14.9'
+            };
 
-// Khởi tạo cURL
-$ch = curl_init($url);
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
 
-// Thiết lập các tùy chọn cho cURL
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'android-device-info: eyJ2ZXJzaW9uLW5hbWUiOiIxLjMuNS41IiwiaXBhZGRyZXNzIjoiMTcyLjE2LjEuNCIsImFkanVzIjoiIiwibG9naW4taWQiOiJjODkyM2Y1MS1iZTVmLTc2YTItODVhMy1lZTk1OTEyZDEzNCIsImdhbGUiOiJlOWM1NzM1Zi02MjA0LTQzOTMtOGY0NC1hNmQwY2RkMDU3NjkiLCJz2lkIjoiIiwiYW5kcm9pZC1pZCI6IjgwZjZkMjczNGFlOTdjNjgiLCJtYWMiOiIwMDpEQjpBNTpBRTowNyIsImFwcC1uYW1lIjoiVWdQaG9uZSIsIm9zLXZlcnNpb24iOiI5IiwiaW1zaWNvZGUiOiI0NTIwMSIsInJvb3QiOiJmYWxzZSIsInZlcnNpb24tY29kZSI6IjEzNTUiLCJpbWVpIjoiODBmNmQyNzM0YWU5N2M2OCIsIm1vZGVsIjoiU00tUzkyNjAiLCJncHJzIjoiZmU4MDo6MmRiOmE1ZmY6ZmVhZTo4YzA3JXdsYW4wIiwicGhvbmVzaW0iOiJNb2JpRm9uZSIsImJyYW5kIjoic2Ftc3VuZyJ9',
-    'access-token: e328d2c89893dd45b909d5041438361120241003205200',
-    'terminal: android_google',
-    'lang: vi',
-    'login-id: c8923f51-be5f-76a2-85b3-ee95912d134',
-    'android-client-id: 80f6d2734ae97c68fb45f024-3b8f-4743-91bd-f20b2c0f956d',
-    'accept-encoding: gzip',
-    'user-agent: okhttp/3.14.9'
-]);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-// Gửi yêu cầu và nhận phản hồi
-$response = curl_exec($ch);
+                const result = await response.json();
+                // In ra phản hồi
+                console.log(result);
 
-// Kiểm tra lỗi
-if (curl_errno($ch)) {
-    echo 'Error: ' . curl_error($ch);
-} else {
-    // Xử lý phản hồi
-    echo 'Response: ' . $response;
-}
-
-// Đóng cURL
-curl_close($ch);
-?>
+                // Tạo thông điệp hiển thị
+                const message = `
+                    Mã: ${result.code} <br>
+                    Thông điệp: ${result.msg} <br>
+                    Tổng: ${result.data.total} <br>
+                    Hiện tại: ${result.data.now} <br>
+                    Có sẵn: ${result.data.available} <br>
+                    Ảnh: <img src="${result.data.img}" alt="Diamond Image" width="100"> <br>
+                    Thông điệp chi tiết: ${result.data.str}
+                `;
+                
+                // Hiển thị thông điệp
+                document.getElementById('response').innerHTML = message;
+            } catch (error) {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Đã xảy ra lỗi khi gửi yêu cầu.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Gửi Yêu Cầu API</h1>
+    <button onclick="sendApiRequest()">Gửi yêu cầu</button>
+    <div id="response"></div> <!-- Khu vực hiển thị phản hồi -->
+</body>
+</html>
