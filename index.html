@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Label Form with Rain Effect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --success: #0ABF30;
+            --error: #E24D4C;
+            --warning: #E9BD0C;
+            --info: #3498DB;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .notifications {
+            position: fixed;
+            top: 30px;
+            right: 20px;
+        }
+
+        .notifications :where(.toast, .column) {
+            display: flex;
+            align-items: center;
+        }
+
+        .notifications .toast {
+            width: 400px;
+            position: relative;
+            overflow: hidden;
+            list-style: none;
+            border-radius: 4px;
+            padding: 16px 17px;
+            margin-bottom: 10px;
+            background: #ffffff; /* Changed to white */
+            justify-content: space-between;
+            animation: show_toast 0.3s ease forwards;
+        }
+
+        @keyframes show_toast {
+            0% {
+                transform: translateX(100%);
+            }
+            40% {
+                transform: translateX(-5%);
+            }
+            80% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-10px);
+            }
+        }
+
+        .notifications .toast.hide {
+            animation: hide_toast 0.3s ease forwards;
+        }
+
+        @keyframes hide_toast {
+            0% {
+                transform: translateX(-10px);
+            }
+            40% {
+                transform: translateX(0%);
+            }
+            80% {
+                transform: translateX(-5%);
+            }
+            100% {
+                transform: translateX(calc(100% + 20px));
+            }
+        }
+
+        .toast::before {
+            position: absolute;
+            content: "";
+            height: 3px;
+            width: 100%;
+            bottom: 0px;
+            left: 0px;
+            animation: progress 5s linear forwards;
+        }
+
+        @keyframes progress {
+            100% {
+                width: 0%;
+            }
+        }
+
+        .toast.success::before {
+            background: var(--success);
+        }
+
+        .toast.error::before {
+            background: var(--error);
+        }
+
+        .toast.warning::before {
+            background: var(--warning);
+        }
+
+        .toast.info::before {
+            background: var(--info);
+        }
+
+        .toast .column i {
+            font-size: 1.75rem;
+        }
+
+        .toast.success .column i {
+            color: var(--success);
+        }
+
+        .toast.error .column i {
+            color: var(--error);
+        }
+
+        .toast.warning .column i {
+            color: var(--warning);
+        }
+
+        .toast.info .column i {
+            color: var(--info);
+        }
+
+        .toast .column span {
+            font-size: 1.07rem;
+            margin-left: 12px;
+        }
+
+        .toast i:last-child {
+            color: #aeb0d7;
+            cursor: pointer;
+        }
+
+        .toast i:last-child:hover {
+            color: var(--dark);
+        }
+
+        /* Màu đen cho biểu tượng TikTok */
+        .toast .column i.fa-brands.fa-tiktok {
+            color: black; /* Màu đen */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            background: url('your-background-image.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.65);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
+            z-index: 10;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Rain Effect */
+        .rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .drop {
+            position: absolute;
+            bottom: 100%;
+            width: 2px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.5);
+            animation: fall linear infinite;
+        }
+
+        /* Input form styles with floating labels */
+        .form-group {
+            position: relative;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease; /* Thêm hiệu ứng cho toàn bộ group */
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+            background: transparent; /* Không có nền cho input */
+            transition: border-color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng cho border */
+            font-weight: 700; /* Chữ đậm trong input */
+            color: black; /* Màu chữ trong input */
+        }
+
+        /* Cookie input for multi-line */
+        textarea {
+            resize: none; /* Không cho phép thay đổi kích thước */
+            height: 60px; /* Chiều cao cho 3 dòng */
+        }
+
+        /* Change border color to green when focused */
+        input:focus,
+        textarea:focus {
+            border-color: #4CAF50; /* Màu xanh lá */
+        }
+
+        label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 16px; /* Kích thước chữ ban đầu */
+            color: black; /* Màu chữ trong label */
+            transition: all 0.3s ease;
+            padding: 0 5px;
+            font-weight: 700; /* Chữ đậm */
+            cursor: text; /* Thay đổi con trỏ khi di chuột vào label */
+        }
+
+        /* Floating effect */
+        input:focus + label,
+        textarea:focus + label,
+        input:not(:placeholder-shown) + label,
+        textarea:not(:placeholder-shown) + label,
+        label:focus-within {
+            top: -15px; /* Di chuyển lên cao */
+            left: 10px;
+            font-size: 14px; /* Kích thước chữ khi label di chuyển lên */
+            color: #4CAF50; /* Màu chữ khi label di chuyển lên */
+        }
+
+        /* Nâng input lên một chút khi focus */
+        input:focus,
+        textarea:focus {
+            transform: translateY(-3px); /* Nâng lên 3px */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50; /* Màu xanh lá */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Đậm màu khi hover */
+        }
+
+        /* Rain Drop Animation */
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Specific Rain Drops for Better Appearance */
+        .drop:nth-child(1) { left: 10%; animation-duration: 0.6s; }
+        .drop:nth-child(2) { left: 20%; animation-duration: 0.9s; }
+        .drop:nth-child(3) { left: 30%; animation-duration: 0.7s; }
+        .drop:nth-child(4) { left: 40%; animation-duration: 1s; }
+        .drop:nth-child(5) { left: 50%; animation-duration: 0.8s; }
+        .drop:nth-child(6) { left: 60%; animation-duration: 0.7s; }
+        .drop:nth-child(7) { left: 70%; animation-duration: 0.8s; }
+        .drop:nth-child(8) { left: 80%; animation-duration: 1s; }
+        .drop:nth-child(9) { left: 90%; animation-duration: 0.6s; }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Result Section */
+        .result {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+</head>
+<body>
+    <ul class="notifications">
+        <li class="toast info hide">
+            <div class="column">
+                <i class="fa-brands fa-tiktok"></i> <!-- Biểu tượng TikTok -->
+            </div>
+            <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>
+        </li>
+    </ul>
+    <script>
+        const notifications = document.querySelector(".notifications");
+
+        const toastDetails = {
+            timer: 5000,
+            info: {
+                icon: 'fa-brands fa-tiktok',
+                text: 'Follow Và Like Tiktok @Thopaymau',
+            }
+        };
+
+        const removeToast = (toast) => {
+            toast.classList.add("hide");
+            if(toast.timeoutId) clearTimeout(toast.timeoutId);
+            setTimeout(() => toast.remove(), 500);
+        };
+
+        const createToast = (id) => {
+            const { icon, text } = toastDetails[id];
+            const toast = document.querySelector(`.toast.${id}`);
+            toast.classList.remove("hide");
+            toast.innerHTML = `<div class="column">
+                                <i class="fa-solid ${icon}"></i>
+                                <span>${text}</span>
+                              </div>
+                              <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+            notifications.appendChild(toast);
+            toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+        };
+
+        window.onload = () => {
+            createToast('info');
+        };
+    </script>
+</body>
+</html>
+    <!-- Raindrop Animation -->
+    <div class="rain">
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="container">
+        <h1>TOOL XEM QC PVDH</h1>
+        <form action="" method="POST">
+            <!-- Floating label form group -->
+            <div class="form-group">
+                <input type="text" id="token" name="token" required placeholder=" ">
+                <label for="token">Token</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="login_id" name="login_id" required placeholder=" ">
+                <label for="login_id">Login ID</label>
+            </div>
+
+            <div class="form-group">
+                <textarea id="cookie" name="cookie" required placeholder=" "></textarea>
+                <label for="cookie">Cookie</label>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Result Section -->
+        <div class="result">
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Nhận dữ liệu từ form
+                $token = $_POST['token'];
+                $login_id = $_POST['login_id'];
+                $cookie = $_POST['cookie'];
+
+                // Thực hiện yêu cầu cURL
+                $url = "https://www.ugphone.com/api/apiv1/user/userInfo";
+
+                $headers = [
+                    "accept: application/json, text/plain, */*",
+                    "accept-encoding: gzip, deflate, br, zstd",
+                    "accept-language: vi,vi-VN;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",
+                    "access-token: " . $token,
+                    "cookie: " . $cookie,
+                    "lang: vi",
+                    "login-id: " . $login_id,
+                    "priority: u=1, i",
+                    "referer: https://www.ugphone.com/toc-portal/",
+                    "sec-ch-ua: \"Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
+                    "sec-ch-ua-arch: \"x86\"",
+                    "sec-ch-ua-bitness: \"64\"",
+                    "sec-ch-ua-full-version: \"129.0.6668.90\"",
+                    "sec-ch-ua-full-version-list: \"Google Chrome\";v=\"129.0.6668.90\", \"Not=A?Brand\";v=\"8.0.0.0\", \"Chromium\";v=\"129.0.6668.90\"",
+                    "sec-ch-ua-mobile: ?0",
+                    "sec-ch-ua-model: \"\"",
+                    "sec-ch-ua-platform: \"Windows\"",
+                    "sec-ch-ua-platform-version: \"10.0.0\"",
+                    "sec-fetch-dest: empty",
+                    "sec-fetch-mode: cors",
+                    "sec-fetch-site: same-origin",
+                    "terminal: web",
+                    "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+                ];
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_ENCODING, '');
+
+                $response = curl_exec($ch);
+
+                if ($response === false) {
+                    echo "cURL Error: " . curl_error($ch);
+                    exit;
+                }
+
+                curl_close($ch);
+
+                $data = json_decode($response, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    echo "Error decoding JSON: " . json_last_error_msg() . "<br>";
+                    exit;
+                }
+
+                if (isset($data['data'])) {
+                    $client_id = isset($data['data']['client_id']) ? $data['data']['client_id'] : 'N/A';
+                    $diamonds = isset($data['data']['wallet']['str']) ? $data['data']['wallet']['str'] : 'N/A';
+
+                    echo "Client ID: " . $client_id . "<br>";
+                    echo "Diamonds: " . $diamonds . "<br>";
+                } else {
+                    echo "Error: 'data' field not found in the response.<br>";
+                }
+            }
+            ?>
+        </div>
+    </div>
+
+</body>
+</html>
